@@ -28,16 +28,16 @@
   "dependencies": {
     "@gulp-sourcemaps/identity-map": "^2.0.1",
     "@gulp-sourcemaps/map-sources": "^1.0.0",
-    "acorn": "^6.4.1",
-    "convert-source-map": "^1.0.0",
+    "acorn": "^8.8.2",
+    "convert-source-map": "^2.0.0",
     "css": "^3.0.0",
-    "debug-fabulous": "^1.0.0",
-    "detect-newline": "^2.0.0",
+    "debug-fabulous": "^2.0.2",
+    "detect-newline": "^4.0.0",
     "graceful-fs": "^4.0.0",
     "plugin-error": "^2.0.1",
-    "source-map": "^0.6.0",
+    "source-map": "^0.7.4",
     "strip-bom-string": "^1.0.0",
-    "through2": "^2.0.0"
+    "through2": "^4.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.22.1",

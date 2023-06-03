@@ -2,7 +2,7 @@
 
 import through from 'through2'
 import path from 'path'
-import acorn from 'acorn'
+import * as acorn from 'acorn'
 import {
   SourceMapGenerator
 } from 'source-map'

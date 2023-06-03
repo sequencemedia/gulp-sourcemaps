@@ -1,5 +1,7 @@
 import path from 'path'
-import detectNewline from 'detect-newline'
+import {
+  detectNewline
+} from 'detect-newline'
 import debug from './debug.mjs'
 
 export function unixStylePath (filePath) {
