@@ -63,7 +63,7 @@ export default function write (destPath, options) {
     internals.mapDestPath(file, this)
 
     this.push(file)
-    callback()
+    return callback()
   }
 
   return through.obj(sourceMapWrite)
