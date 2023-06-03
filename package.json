@@ -22,7 +22,8 @@
   "homepage": "http://github.com/gulp-sourcemaps/gulp-sourcemaps",
   "scripts": {
     "lint": "eslint . --ext .mjs --ext .cjs",
-    "lint:fix": "npm run lint -- --fix"
+    "lint:fix": "npm run lint -- --fix",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@gulp-sourcemaps/identity-map": "^2.0.1",
