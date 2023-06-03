@@ -10,6 +10,8 @@ import {
 
 import initInternals from './internals.mjs'
 
+const STREAMING_NOT_SUPPORTED_MESSAGE = 'Streaming not supported'
+
 function getTransformFor (destination, options) {
   return function transform (file, encoding, callback) {
     if (file.isNull() || !file.sourceMap) {
@@ -18,7 +20,7 @@ function getTransformFor (destination, options) {
     }
 
     if (file.isStream()) {
-      return callback(new PluginError(PLUGIN_NAME, 'Streaming not supported'))
+      return callback(new PluginError(PLUGIN_NAME, STREAMING_NOT_SUPPORTED_MESSAGE))
     }
 
     const internals = initInternals(destination, options)
