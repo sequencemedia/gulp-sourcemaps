@@ -83,24 +83,25 @@ export default function internals (destination, options) {
     } else {
       let mapFile = path.join(destination, file.relative) + '.map'
       // custom map file name
-      if (options.mapFile && typeof options.mapFile === 'function') {
+      if (typeof options.mapFile === 'function') {
         mapFile = options.mapFile(mapFile)
       }
 
       const sourceMapPath = path.join(file.base, mapFile)
 
-      // if explicit destination path is set
       if (options.destination) {
-        const destSourceMapPath = path.join(file.cwd, options.destination, mapFile)
-        const destFilePath = path.join(file.cwd, options.destination, file.relative)
-        sourceMap.file = unixStylePath(path.relative(path.dirname(destSourceMapPath), destFilePath))
+        const destinationSourceMapPath = path.join(file.cwd, options.destination, mapFile)
+        const destinationFilePath = path.join(file.cwd, options.destination, file.relative)
+
+        // explicit `options.destination` path is set
+        sourceMap.file = unixStylePath(path.relative(path.dirname(destinationSourceMapPath), destinationFilePath))
         if (sourceMap.sourceRoot === undefined) {
-          sourceMap.sourceRoot = unixStylePath(path.relative(path.dirname(destSourceMapPath), file.base))
+          sourceMap.sourceRoot = unixStylePath(path.relative(path.dirname(destinationSourceMapPath), file.base))
         } else if (sourceMap.sourceRoot === '' || (sourceMap.sourceRoot && sourceMap.sourceRoot[0] === '.')) {
-          sourceMap.sourceRoot = unixStylePath(path.join(path.relative(path.dirname(destSourceMapPath), file.base), sourceMap.sourceRoot))
+          sourceMap.sourceRoot = unixStylePath(path.join(path.relative(path.dirname(destinationSourceMapPath), file.base), sourceMap.sourceRoot))
         }
       } else {
-        // best effort, can be incorrect if options.destination not set
+        // can be incorrect when `options.destination` path is not set
         sourceMap.file = unixStylePath(path.relative(path.dirname(sourceMapPath), file.path))
         if (sourceMap.sourceRoot === '' || (sourceMap.sourceRoot && sourceMap.sourceRoot[0] === '.')) {
           sourceMap.sourceRoot = unixStylePath(path.join(path.relative(path.dirname(sourceMapPath), file.base), sourceMap.sourceRoot))
@@ -138,7 +139,7 @@ export default function internals (destination, options) {
 
       comment = commentFormatter(unixStylePath(sourceMapPathRelative))
 
-      if (options.sourceMappingURL && typeof options.sourceMappingURL === 'function') {
+      if (typeof options.sourceMappingURL === 'function') {
         comment = commentFormatter(options.sourceMappingURL(file))
       }
     }
