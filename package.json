@@ -57,6 +57,8 @@
     "src"
   ],
   "imports": {
+    "#debug": "./src/debug.mjs",
+    "#utils": "./src/utils.mjs",
     "#gulp-sourcemaps": "./index.mjs"
   },
   "exports": {

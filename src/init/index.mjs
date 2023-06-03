@@ -1,44 +1,55 @@
 // import debug from '../debug').spawn('init';
 
+import path from 'node:path'
 import through from 'through2'
-import path from 'path'
 import * as acorn from 'acorn'
 import {
   SourceMapGenerator
 } from 'source-map'
 import css from 'css'
 import PluginError from 'plugin-error'
-import initInternals from './index.internals.mjs'
-import debug from '../debug.mjs'
-import { PLUGIN_NAME, unixStylePath } from '../utils.mjs'
 
-const log = debug.spawn('init')
+import {
+  PLUGIN_NAME,
+  unixStylePath
+} from '#utils'
 
-/**
- * Initialize source mapping chain
- */
-export default function init (options) {
-  function sourceMapInit (file, encoding, callback) {
-    // pass through if file is null or already has a source map
+import initInternals from './internals.mjs'
+
+function registerTokens (generator, ast, source) {
+  if (ast.position) {
+    generator.addMapping({ original: ast.position.start, generated: ast.position.start, source })
+  }
+
+  for (const key in ast) {
+    if (key !== 'position') {
+      const token = ast[key]
+      if (Object.prototype.toString.call(token) === '[object Object]') {
+        registerTokens(generator, token, source)
+      } else if (Array.isArray(token)) {
+        token.forEach((ast) => {
+          registerTokens(generator, ast, source)
+        })
+      }
+    }
+  }
+}
+
+function getTransformFor (options) {
+  return function transform (file, encoding, done) {
     if (file.isNull() || file.sourceMap) {
       this.push(file)
-      return callback()
+      return done()
     }
 
     if (file.isStream()) {
-      return callback(new PluginError(PLUGIN_NAME, 'Streaming not supported'))
+      return done(new PluginError(PLUGIN_NAME, 'Streaming not supported'))
     }
-
-    if (options === undefined) {
-      options = {}
-    }
-
-    log(function () {
-      return options
-    })
 
     let fileContent = file.contents.toString()
-    let sourceMap, preExistingComment
+    let sourceMap
+    let preExistingComment
+
     const internals = initInternals(options, file, fileContent)
 
     if (options.loadMaps) {
@@ -49,77 +60,48 @@ export default function init (options) {
     }
 
     if (!sourceMap && options.identityMap) {
-      log(() => '**identityMap option is deprecated, update to use sourcemap.identityMap stream**')
-      log(function () {
-        return 'identityMap'
-      })
       const fileType = path.extname(file.path)
       const source = unixStylePath(file.relative)
       const generator = new SourceMapGenerator({ file: source })
 
       if (fileType === '.js') {
         const tokenizer = acorn.tokenizer(fileContent, { locations: true })
+
         while (true) {
           const token = tokenizer.getToken()
+
           if (token.type.label === 'eof') {
             break
           }
+
           const mapping = {
             original: token.loc.start,
             generated: token.loc.start,
             source
           }
+
           if (token.type.label === 'name') {
             mapping.name = token.value
           }
+
           generator.addMapping(mapping)
         }
+
         generator.setSourceContent(source, fileContent)
         sourceMap = generator.toJSON()
-      } else if (fileType === '.css') {
-        log('css')
-        const ast = css.parse(fileContent, { silent: true })
-        log(function () {
-          return ast
-        })
-        const registerTokens = function (ast) {
-          if (ast.position) {
-            generator.addMapping({ original: ast.position.start, generated: ast.position.start, source })
-          }
+      } else {
+        if (fileType === '.css') {
+          const ast = css.parse(fileContent, { silent: true })
 
-          function logAst (key, ast) {
-            log(function () {
-              return 'key: ' + key
-            })
-            log(function () {
-              return ast[key]
-            })
-          }
+          registerTokens(generator, ast, source)
 
-          for (const key in ast) {
-            logAst(key, ast)
-            if (key !== 'position') {
-              if (Object.prototype.toString.call(ast[key]) === '[object Object]') {
-                registerTokens(ast[key])
-              } else if (Array.isArray(ast[key])) {
-                log(function () {
-                  return '@@@@ ast[key] isArray @@@@'
-                })
-                for (let i = 0; i < ast[key].length; i++) {
-                  registerTokens(ast[key][i])
-                }
-              }
-            }
-          }
+          generator.setSourceContent(source, fileContent)
+          sourceMap = generator.toJSON()
         }
-        registerTokens(ast)
-        generator.setSourceContent(source, fileContent)
-        sourceMap = generator.toJSON()
       }
     }
 
     if (!sourceMap) {
-      // Make an empty source map
       sourceMap = {
         version: 3,
         names: [],
@@ -127,16 +109,23 @@ export default function init (options) {
         sources: [unixStylePath(file.relative)],
         sourcesContent: [fileContent]
       }
-    } else if (preExistingComment !== null && typeof preExistingComment !== 'undefined') {
-      sourceMap.preExistingComment = preExistingComment
+    } else {
+      if (preExistingComment) {
+        sourceMap.preExistingComment = preExistingComment
+      }
     }
 
     sourceMap.file = unixStylePath(file.relative)
     file.sourceMap = sourceMap
 
     this.push(file)
-    return callback()
+    return done()
   }
+}
 
-  return through.obj(sourceMapInit)
+/**
+ * Initialize source mapping chain
+ */
+export default function init (options = {}) {
+  return through.obj(getTransformFor(options))
 }
