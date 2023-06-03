@@ -1,4 +1,6 @@
-import through from 'through2'
+import {
+  Transform
+} from 'node:stream'
 import PluginError from 'plugin-error'
 
 import {
@@ -61,5 +63,7 @@ export default function write (destination, options) {
     options.charset = 'utf8'
   }
 
-  return through.obj(getTransformFor(destination, options))
+  const transform = getTransformFor(destination, options)
+
+  return new Transform({ transform, objectMode: true })
 }

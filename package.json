@@ -36,8 +36,7 @@
     "graceful-fs": "^4.0.0",
     "plugin-error": "^2.0.1",
     "source-map": "^0.7.4",
-    "strip-bom-string": "^1.0.0",
-    "through2": "^4.0.2"
+    "strip-bom-string": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.22.1",

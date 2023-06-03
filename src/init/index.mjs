@@ -1,7 +1,9 @@
 // import debug from '../debug').spawn('init';
 
 import path from 'node:path'
-import through from 'through2'
+import {
+  Transform
+} from 'node:stream'
 import * as acorn from 'acorn'
 import {
   SourceMapGenerator
@@ -127,5 +129,7 @@ function getTransformFor (options) {
  * Initialize source mapping chain
  */
 export default function init (options = {}) {
-  return through.obj(getTransformFor(options))
+  const transform = getTransformFor(options)
+
+  return new Transform({ transform, objectMode: true })
 }
