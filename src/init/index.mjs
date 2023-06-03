@@ -18,23 +18,31 @@ import {
 
 import initInternals from './internals.mjs'
 
+const isArray = (v) => Array.isArray(v)
+
+const isObject = (v) => (v || false).constructor === Object && !isArray(v)
+
 function registerTokens (generator, ast, source) {
   if (ast.position) {
     generator.addMapping({ original: ast.position.start, generated: ast.position.start, source })
   }
 
-  for (const key in ast) {
-    if (key !== 'position') {
-      const token = ast[key]
-      if (Object.prototype.toString.call(token) === '[object Object]') {
-        registerTokens(generator, token, source)
-      } else if (Array.isArray(token)) {
-        token.forEach((ast) => {
-          registerTokens(generator, ast, source)
-        })
+  Object
+    .entries(ast)
+    .forEach(([key, token]) => {
+      if (key !== 'position') {
+        if (isArray(token)) {
+          token
+            .forEach((ast) => {
+              registerTokens(generator, ast, source)
+            })
+        } else {
+          if (isObject(token)) {
+            registerTokens(generator, token, source)
+          }
+        }
       }
-    }
-  }
+    })
 }
 
 function getTransformFor (options) {
