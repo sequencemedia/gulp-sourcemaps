@@ -22,10 +22,14 @@ export default function init (options) {
     // pass through if file is null or already has a source map
     if (file.isNull() || file.sourceMap) {
       this.push(file)
+
+      console.log('CALLBACK (3)')
       return callback()
     }
 
     if (file.isStream()) {
+      console.log('CALLBACK (2)')
+
       return callback(new PluginError(PLUGIN_NAME, 'Streaming not supported'))
     }
 
@@ -135,6 +139,9 @@ export default function init (options) {
     file.sourceMap = sourceMap
 
     this.push(file)
+
+    console.log('CALLBACK (1)')
+
     callback()
   }
 

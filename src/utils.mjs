@@ -1,6 +1,6 @@
 import path from 'path'
 import {
-  detectNewline
+  detectNewlineGraceful
 } from 'detect-newline'
 import debug from './debug.mjs'
 
@@ -39,7 +39,7 @@ const commentFormatters = {
 export function getCommentFormatter (file) {
   const extension = file.relative.split('.').pop()
   const fileContents = file.contents.toString()
-  const newline = detectNewline.graceful(fileContents || '')
+  const newline = detectNewlineGraceful(fileContents || '')
 
   let commentFormatter = commentFormatters.default
 
