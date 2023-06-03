@@ -52,6 +52,7 @@
     "husky": "^8.0.3"
   },
   "files": [
+    "LICENSE",
     "index.mjs",
     "src"
   ],
