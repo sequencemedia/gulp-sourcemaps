@@ -18,6 +18,8 @@ import {
 
 import initInternals from './internals.mjs'
 
+const STREAMING_NOT_SUPPORTED_MESSAGE = 'Streaming not supported'
+
 const isArray = (v) => Array.isArray(v)
 
 const isObject = (v) => (v || false).constructor === Object && !isArray(v)
@@ -49,11 +51,13 @@ function getTransformFor (options) {
   return function transform (file, encoding, done) {
     if (file.isNull() || file.sourceMap) {
       this.push(file)
-      return done()
+      done()
+      return
     }
 
     if (file.isStream()) {
-      return done(new PluginError(PLUGIN_NAME, 'Streaming not supported'))
+      done(new PluginError(PLUGIN_NAME, STREAMING_NOT_SUPPORTED_MESSAGE))
+      return
     }
 
     let fileContent = file.contents.toString()
@@ -129,7 +133,7 @@ function getTransformFor (options) {
     file.sourceMap = sourceMap
 
     this.push(file)
-    return done()
+    done()
   }
 }
 
