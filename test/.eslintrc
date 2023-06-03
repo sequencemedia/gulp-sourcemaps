@@ -1,5 +1,7 @@
 {
-  "extends": "gulp/test",
+  "env": {
+    "mocha": true
+  },
   "rules": {
     "no-console": 0
   }
