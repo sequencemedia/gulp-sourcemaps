@@ -26,11 +26,11 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@adobe/css-tools": "^4.3.0-beta.2",
     "@gulp-sourcemaps/identity-map": "^2.0.1",
     "@gulp-sourcemaps/map-sources": "^1.0.0",
     "acorn": "^8.8.2",
     "convert-source-map": "^2.0.0",
-    "css": "^3.0.0",
     "debug-fabulous": "^2.0.2",
     "detect-newline": "^4.0.0",
     "graceful-fs": "^4.0.0",

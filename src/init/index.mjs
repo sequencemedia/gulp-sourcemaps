@@ -6,7 +6,7 @@ import * as acorn from 'acorn'
 import {
   SourceMapGenerator
 } from 'source-map'
-import css from 'css'
+import cssTools from '@adobe/css-tools'
 import PluginError from 'plugin-error'
 
 import {
@@ -91,7 +91,7 @@ function getTransformFor (options) {
         sourceMap = generator.toJSON()
       } else {
         if (fileType === '.css') {
-          const ast = css.parse(fileContent, { silent: true })
+          const ast = cssTools.parse(fileContent, { silent: true })
 
           registerTokens(generator, ast, source)
 
