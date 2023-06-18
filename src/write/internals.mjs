@@ -22,9 +22,7 @@ export default function internals (destination, options) {
       sourceMap.sourceRoot = options.sourceRoot
     }
 
-    if (sourceMap.sourceRoot === null) {
-      sourceMap.sourceRoot = undefined
-    }
+    if (sourceMap.sourceRoot === null) delete sourceMap.sourceRoot
   }
 
   function mapSources (file) {
@@ -34,9 +32,8 @@ export default function internals (destination, options) {
       return
     }
 
-    file.sourceMap.sources = file.sourceMap.sources.map(function (filePath) {
-      // keep the references files like ../node_modules within the sourceRoot
-
+    // keep the references files like ../node_modules within the sourceRoot
+    file.sourceMap.sources = file.sourceMap.sources.map((filePath) => {
       if (options.mapSourcesAbsolute === true) {
         if (!file.dirname) {
           filePath = path.join(file.base, filePath).replace(file.cwd, '')
@@ -156,4 +153,4 @@ export default function internals (destination, options) {
     mapSources,
     mapDestinationPath
   }
-};
+}

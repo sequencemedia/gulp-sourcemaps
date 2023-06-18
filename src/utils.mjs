@@ -22,13 +22,13 @@ export function getSourceMappingURLPattern () {
 }
 
 const commentFormatters = {
-  css: function cssCommentFormatter (preLine, newline, url) {
-    return preLine + '/*# sourceMappingURL=' + url + ' */' + newline
+  css (preLine, newLine, url) {
+    return preLine + '/*# sourceMappingURL=' + url + ' */' + newLine
   },
-  js: function jsCommentFormatter (preLine, newline, url) {
-    return preLine + '//# sourceMappingURL=' + url + newline
+  js (preLine, newLine, url) {
+    return preLine + '//# sourceMappingURL=' + url + newLine
   },
-  default: function defaultFormatter () {
+  default () {
     return ''
   }
 }
@@ -36,14 +36,14 @@ const commentFormatters = {
 export function getCommentFormatter (file) {
   const extension = file.relative.split('.').pop()
   const fileContents = file.contents.toString()
-  const newline = detectNewlineGraceful(fileContents || '')
+  const newLine = detectNewlineGraceful(fileContents || '')
 
   let commentFormatter = commentFormatters.default
 
   if (file.sourceMap.preExistingComment) {
-    commentFormatter = (commentFormatters[extension] || commentFormatter).bind(undefined, '', newline)
+    commentFormatter = (commentFormatters[extension] || commentFormatter).bind(undefined, '', newLine)
   } else {
-    commentFormatter = (commentFormatters[extension] || commentFormatter).bind(undefined, newline, newline)
+    commentFormatter = (commentFormatters[extension] || commentFormatter).bind(undefined, newLine, newLine)
   }
 
   return commentFormatter
@@ -51,7 +51,7 @@ export function getCommentFormatter (file) {
 
 export function getInlinePreExisting (fileContent) {
   if (getSourceMappingURLPattern().test(fileContent)) {
-    return fileContent.match(getSourceMappingURLPattern())[0]
+    return fileContent.match(getSourceMappingURLPattern()).shift()
   }
 }
 

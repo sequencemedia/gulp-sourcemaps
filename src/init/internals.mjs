@@ -18,40 +18,42 @@ function fixSources (sources, file) {
   // fix source paths and sourceContent for imported source map
   if (sources.map) {
     sources.map.sourcesContent = sources.map.sourcesContent || []
-    sources.map.sources.forEach(function (source, i) {
-      if (source.match(URL_PATTERN)) {
-        sources.map.sourcesContent[i] = sources.map.sourcesContent[i] || null
-        return
-      }
-
-      let sourcePath = path.resolve(sources.path, source)
-      sources.map.sources[i] = unixStylePath(path.relative(file.base, sourcePath))
-
-      if (!sources.map.sourcesContent[i]) {
-        let sourceContent = null
-        if (sources.map.sourceRoot) {
-          if (sources.map.sourceRoot.match(URL_PATTERN)) {
-            sources.map.sourcesContent[i] = null
-            return
-          }
-
-          sourcePath = path.resolve(sources.path, sources.map.sourceRoot, source)
+    sources.map.sources
+      .forEach((source, i) => {
+        if (source.match(URL_PATTERN)) {
+          sources.map.sourcesContent[i] = sources.map.sourcesContent[i] || null
+          return
         }
 
-        // if current file: use content
-        if (sourcePath === file.path) {
-          sourceContent = sources.content
-        } else { // attempt load content from file
-          try {
-            sourceContent = stripBom(fs.readFileSync(sourcePath, 'utf8'))
-          } catch {
-            debug(() => `source file not found "${sourcePath}"`)
-          }
-        }
+        let sourcePath = path.resolve(sources.path, source)
+        sources.map.sources[i] = unixStylePath(path.relative(file.base, sourcePath))
 
-        sources.map.sourcesContent[i] = sourceContent
-      }
-    })
+        if (!sources.map.sourcesContent[i]) {
+          let sourceContent = null
+          if (sources.map.sourceRoot) {
+            if (sources.map.sourceRoot.match(URL_PATTERN)) {
+              sources.map.sourcesContent[i] = null
+              return
+            }
+
+            sourcePath = path.resolve(sources.path, sources.map.sourceRoot, source)
+          }
+
+          // if current file: use content
+          if (sourcePath === file.path) {
+            sourceContent = sources.content
+          } else { // attempt load content from file
+            try {
+              sourceContent = stripBom(fs.readFileSync(sourcePath, 'utf8'))
+            } catch {
+              debug(() => `source file not found "${sourcePath}"`)
+            }
+          }
+
+          sources.map.sourcesContent[i] = sourceContent
+        }
+      })
+
     // remove source map comment from source
     file.contents = Buffer.from(sources.content, 'utf8')
   }
@@ -123,4 +125,4 @@ export default function internals (options, file, fileContent) {
   return {
     loadMaps
   }
-};
+}
