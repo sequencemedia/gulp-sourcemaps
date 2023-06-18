@@ -61,7 +61,7 @@ export default function internals (destination, options) {
           try {
             sourceMap.sourcesContent[i] = stripBom(fs.readFileSync(sourcePath, 'utf8'))
           } catch {
-            debug(() => 'source file not found: ' + sourcePath)
+            debug(() => `source file not found "${sourcePath}"`)
           }
         }
       }

@@ -7,7 +7,6 @@ import stripBom from 'strip-bom-string'
 import {
   URL_PATTERN,
   unixStylePath,
-  exceptionToString,
   getInlinePreExisting
 } from '#utils'
 
@@ -25,8 +24,8 @@ function fixSources (sources, file) {
         return
       }
 
-      let absPath = path.resolve(sources.path, source)
-      sources.map.sources[i] = unixStylePath(path.relative(file.base, absPath))
+      let sourcePath = path.resolve(sources.path, source)
+      sources.map.sources[i] = unixStylePath(path.relative(file.base, sourcePath))
 
       if (!sources.map.sourcesContent[i]) {
         let sourceContent = null
@@ -36,17 +35,17 @@ function fixSources (sources, file) {
             return
           }
 
-          absPath = path.resolve(sources.path, sources.map.sourceRoot, source)
+          sourcePath = path.resolve(sources.path, sources.map.sourceRoot, source)
         }
 
         // if current file: use content
-        if (absPath === file.path) {
+        if (sourcePath === file.path) {
           sourceContent = sources.content
         } else { // attempt load content from file
           try {
-            sourceContent = stripBom(fs.readFileSync(absPath, 'utf8'))
+            sourceContent = stripBom(fs.readFileSync(sourcePath, 'utf8'))
           } catch {
-            debug(() => 'warn: source file not found: ' + absPath)
+            debug(() => `source file not found "${sourcePath}"`)
           }
         }
 
@@ -78,25 +77,26 @@ function getInlineSources (sources, options, file) {
 
 function getFileSources (sources, file) {
   // look for source map comment referencing a source map file
-  const mapComment = convert.mapFileCommentRegex.exec(sources.content)
-  let mapFile
+  const sourceMapComment = convert.mapFileCommentRegex.exec(sources.content)
+  let sourceMapPath
 
-  if (mapComment) {
-    sources.preExistingComment = mapComment[1] || mapComment[2]
-    mapFile = path.resolve(path.dirname(file.path), sources.preExistingComment)
+  if (sourceMapComment) {
+    const comment = sourceMapComment[1] || sourceMapComment[2]
+    sourceMapPath = path.resolve(path.dirname(file.path), comment)
+    sources.preExistingComment = comment
     sources.content = convert.removeMapFileComments(sources.content)
     // if no comment try map file with same name as source file
   } else {
-    mapFile = file.path + '.map'
+    sourceMapPath = file.path + '.map'
   }
 
   // sources in external map are relative to map file
-  sources.path = path.dirname(mapFile)
+  sources.path = path.dirname(sourceMapPath)
 
   try {
-    sources.map = JSON.parse(stripBom(fs.readFileSync(mapFile, 'utf8')))
+    sources.map = JSON.parse(stripBom(fs.readFileSync(sourceMapPath, 'utf8')))
   } catch (e) {
-    debug(() => 'warn: external source map not found or invalid: ' + mapFile + ' ' + exceptionToString(e))
+    debug(() => `source map not found or invalid "${sourceMapPath}"`) // ' ' + exceptionToString(e))
   }
 }
 
