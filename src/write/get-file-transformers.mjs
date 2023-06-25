@@ -12,7 +12,7 @@ import rootDebug from '#debug'
 
 const debug = rootDebug.spawn('write:internals')
 
-export default function internals (destination, options) {
+export default function getFileTransformers (destination, options) {
   function sourceRoot (file) {
     const sourceMap = file.sourceMap
 

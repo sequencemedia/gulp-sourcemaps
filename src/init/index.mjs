@@ -16,7 +16,7 @@ import {
   unixStylePath
 } from '#utils'
 
-import initInternals from './internals.mjs'
+import getLoadMaps from './get-load-maps.mjs'
 
 const STREAMING_NOT_SUPPORTED_MESSAGE = 'Streaming not supported'
 
@@ -25,8 +25,16 @@ const isArray = (v) => Array.isArray(v)
 const isObject = (v) => (v || false).constructor === Object && !isArray(v)
 
 function registerTokens (generator, ast, source) {
-  if (ast.position) {
-    generator.addMapping({ original: ast.position.start, generated: ast.position.start, source })
+  const {
+    position
+  } = ast
+
+  if (position) {
+    const {
+      start
+    } = position
+
+    generator.addMapping({ original: start, generated: start, source })
   }
 
   Object
@@ -64,10 +72,9 @@ function getTransformFor (options) {
     let sourceMap
     let preExistingComment
 
-    const internals = initInternals(options, file, fileContent)
-
     if (options.loadMaps) {
-      const result = internals.loadMaps()
+      const loadMaps = getLoadMaps(options, file, fileContent)
+      const result = loadMaps()
       sourceMap = result.map
       fileContent = result.content
       preExistingComment = result.preExistingComment

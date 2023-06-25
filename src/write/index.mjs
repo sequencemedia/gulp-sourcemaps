@@ -8,33 +8,44 @@ import {
   unixStylePath
 } from '#utils'
 
-import initInternals from './internals.mjs'
+import getFileTransformers from './get-file-transformers.mjs'
 
 const STREAMING_NOT_SUPPORTED_MESSAGE = 'Streaming not supported'
+const DEFAULT_OPTIONS = {
+  includeContent: true,
+  addComment: true,
+  charset: 'utf8'
+}
 
 function getTransformFor (destination, options) {
-  return function transform (file, encoding, callback) {
+  return function transform (file, encoding, done) {
     if (file.isNull() || !file.sourceMap) {
       this.push(file)
-      return callback()
+      return done()
     }
 
     if (file.isStream()) {
-      return callback(new PluginError(PLUGIN_NAME, STREAMING_NOT_SUPPORTED_MESSAGE))
+      return done(new PluginError(PLUGIN_NAME, STREAMING_NOT_SUPPORTED_MESSAGE))
     }
 
-    const internals = initInternals(destination, options)
+    const {
+      sourceRoot,
+      loadContent,
+      mapSources,
+      mapDestinationPath
+    } = getFileTransformers(destination, options)
 
     // fix paths if Windows style paths
     file.sourceMap.file = unixStylePath(file.relative)
 
-    internals.sourceRoot(file)
-    internals.loadContent(file)
-    internals.mapSources(file)
-    internals.mapDestinationPath(file, this)
+    sourceRoot(file)
+    loadContent(file)
+    mapSources(file)
+    mapDestinationPath(file, this)
 
     this.push(file)
-    return callback()
+
+    return done()
   }
 }
 
@@ -50,22 +61,7 @@ export default function write (destination, options) {
     destination = undefined
   }
 
-  options = options || {}
-
-  // set defaults for options if unset
-  if (options.includeContent === undefined) {
-    options.includeContent = true
-  }
-
-  if (options.addComment === undefined) {
-    options.addComment = true
-  }
-
-  if (options.charset === undefined) {
-    options.charset = 'utf8'
-  }
-
-  const transform = getTransformFor(destination, options)
+  const transform = getTransformFor(destination, { ...DEFAULT_OPTIONS, ...options })
 
   return new Transform({ transform, objectMode: true })
 }

@@ -21,29 +21,30 @@ export function getSourceMappingURLPattern () {
   return /\/\/# sourceMappingURL=.*/g
 }
 
-const commentFormatters = {
-  css (preLine, newLine, url) {
-    return preLine + '/*# sourceMappingURL=' + url + ' */' + newLine
-  },
-  js (preLine, newLine, url) {
-    return preLine + '//# sourceMappingURL=' + url + newLine
-  },
-  default () {
-    return ''
-  }
-}
+const cssCommentFormatter = (preLine, newLine, url) => `${preLine}/*# sourceMappingURL=${url} */${newLine}`
+const jsCommentFormatter = (preLine, newLine, url) => `${preLine}//# sourceMappingURL=${url}${newLine}`
+const cjsCommentFormatter = (...args) => jsCommentFormatter(...args)
+const mjsCommentFormatter = (...args) => jsCommentFormatter(...args)
+const defaultCommentFormatter = () => ''
+
+const COMMENT_FORMATTERS = new Map([
+  ['css', cssCommentFormatter],
+  ['js', jsCommentFormatter],
+  ['cjs', cjsCommentFormatter],
+  ['mjs', mjsCommentFormatter]
+])
 
 export function getCommentFormatter (file) {
   const extension = file.relative.split('.').pop()
   const fileContents = file.contents.toString()
   const newLine = detectNewlineGraceful(fileContents || '')
 
-  let commentFormatter = commentFormatters.default
+  let commentFormatter
 
   if (file.sourceMap.preExistingComment) {
-    commentFormatter = (commentFormatters[extension] || commentFormatter).bind(undefined, '', newLine)
+    commentFormatter = (COMMENT_FORMATTERS.get(extension) ?? defaultCommentFormatter).bind(undefined, '', newLine)
   } else {
-    commentFormatter = (commentFormatters[extension] || commentFormatter).bind(undefined, newLine, newLine)
+    commentFormatter = (COMMENT_FORMATTERS.get(extension) ?? defaultCommentFormatter).bind(undefined, newLine, newLine)
   }
 
   return commentFormatter

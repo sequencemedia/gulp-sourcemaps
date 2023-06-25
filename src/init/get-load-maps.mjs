@@ -12,7 +12,7 @@ import {
 
 import rootDebug from '#debug'
 
-const debug = rootDebug.spawn('init:internals')
+const debug = rootDebug.spawn('init:get-load-maps')
 
 function fixSources (sources, file) {
   // fix source paths and sourceContent for imported source map
@@ -102,8 +102,8 @@ function getFileSources (sources, file) {
   }
 }
 
-export default function internals (options, file, fileContent) {
-  function loadMaps () {
+export default function getLoadMaps (options, file, fileContent) {
+  return function loadMaps () {
     const sources = {
       path: '',
       map: null,
@@ -120,9 +120,5 @@ export default function internals (options, file, fileContent) {
     fixSources(sources, file)
 
     return sources
-  }
-
-  return {
-    loadMaps
   }
 }
