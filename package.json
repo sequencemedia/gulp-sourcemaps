@@ -21,7 +21,7 @@
   "repository": "git://github.com/gulp-sourcemaps/gulp-sourcemaps.git",
   "homepage": "http://github.com/gulp-sourcemaps/gulp-sourcemaps",
   "scripts": {
-    "lint": "eslint . --ext .mjs --ext .cjs",
+    "lint": "eslint . --ext .mjs,.cjs",
     "lint:fix": "npm run lint -- --fix",
     "prepare": "husky install"
   },
@@ -29,25 +29,22 @@
     "@adobe/css-tools": "^4.3.0-beta.2",
     "@gulp-sourcemaps/identity-map": "^2.0.1",
     "@gulp-sourcemaps/map-sources": "^1.0.0",
-    "acorn": "^8.8.2",
+    "acorn": "^8.9.0",
     "convert-source-map": "^2.0.0",
     "debug-fabulous": "^2.0.2",
     "detect-newline": "^4.0.0",
-    "graceful-fs": "^4.0.0",
+    "graceful-fs": "^4.2.11",
     "plugin-error": "^2.0.1",
     "source-map": "^0.7.4",
     "strip-bom-string": "^1.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.22.1",
-    "@babel/eslint-parser": "^7.21.8",
-    "@babel/preset-env": "^7.22.4",
-    "@sequencemedia/hooks": "^1.0.431",
-    "eslint": "^8.41.0",
+    "@babel/core": "^7.22.5",
+    "@babel/eslint-parser": "^7.22.5",
+    "@babel/preset-env": "^7.22.5",
+    "@sequencemedia/hooks": "^1.0.437",
+    "eslint": "^8.43.0",
     "eslint-config-standard": "^17.1.0",
-    "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^6.1.1",
     "husky": "^8.0.3"
   },
   "files": [
