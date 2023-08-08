@@ -10,7 +10,11 @@
   ],
   "main": "./index.mjs",
   "type": "module",
-  "author": "Jonathan Perry for Sequence Media Limited <sequencemedia@sequencemedia.net>",
+  "author": {
+    "name": "Jonathan Perry for Sequence Media Limited",
+    "email": "sequencemedia@sequencemedia.net",
+    "url": "http://sequencemedia.net"
+  },
   "contributors": [
     "Florian Reiterer <me@florianreiterer.com>"
   ],
@@ -26,7 +30,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@adobe/css-tools": "^4.3.0-beta.2",
+    "@adobe/css-tools": "^4.3.0",
     "@gulp-sourcemaps/identity-map": "^2.0.1",
     "@gulp-sourcemaps/map-sources": "^1.0.0",
     "acorn": "^8.10.0",
@@ -39,9 +43,9 @@
     "strip-bom-string": "^1.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.22.9",
-    "@babel/eslint-parser": "^7.22.9",
-    "@babel/preset-env": "^7.22.9",
+    "@babel/core": "^7.22.10",
+    "@babel/eslint-parser": "^7.22.10",
+    "@babel/preset-env": "^7.22.10",
     "@sequencemedia/hooks": "^1.0.444",
     "eslint": "^8.46.0",
     "eslint-config-standard": "^17.1.0",
