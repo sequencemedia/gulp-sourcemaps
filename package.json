@@ -36,7 +36,7 @@
     "acorn": "^8.10.0",
     "convert-source-map": "^2.0.0",
     "debug-fabulous": "^2.0.2",
-    "detect-newline": "^4.0.0",
+    "detect-newline": "^4.0.1",
     "graceful-fs": "^4.2.11",
     "plugin-error": "^2.0.1",
     "source-map": "^0.7.4",
@@ -47,7 +47,7 @@
     "@babel/eslint-parser": "^7.22.15",
     "@babel/preset-env": "^7.22.20",
     "@sequencemedia/hooks": "^1.0.453",
-    "eslint": "^8.49.0",
+    "eslint": "^8.50.0",
     "eslint-config-standard": "^17.1.0",
     "husky": "^8.0.3"
   },
