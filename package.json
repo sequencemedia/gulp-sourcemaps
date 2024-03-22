@@ -1,6 +1,6 @@
 {
   "name": "@sequencemedia/gulp-sourcemaps",
-  "version": "1.0.91",
+  "version": "1.0.92",
   "description": "Sourcemaps for Gulp",
   "keywords": [
     "gulpplugin",
