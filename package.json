@@ -20,7 +20,7 @@
   ],
   "license": "ISC",
   "engines": {
-    "node": ">=18.12.0"
+    "node": ">=18.12.0 <=21.7.3 || >=22.2.0"
   },
   "repository": "git://github.com/gulp-sourcemaps/gulp-sourcemaps.git",
   "homepage": "http://github.com/gulp-sourcemaps/gulp-sourcemaps",
