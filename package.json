@@ -33,7 +33,7 @@
     "@adobe/css-tools": "^4.4.0",
     "@gulp-sourcemaps/identity-map": "^2.0.1",
     "@gulp-sourcemaps/map-sources": "^1.0.0",
-    "acorn": "^8.13.0",
+    "acorn": "^8.14.0",
     "convert-source-map": "^2.0.0",
     "debug-fabulous": "^2.0.8",
     "detect-newline": "^4.0.1",
