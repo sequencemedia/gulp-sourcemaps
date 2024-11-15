@@ -30,7 +30,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@adobe/css-tools": "^4.4.0",
+    "@adobe/css-tools": "^4.4.1",
     "@gulp-sourcemaps/identity-map": "^2.0.1",
     "@gulp-sourcemaps/map-sources": "^1.0.0",
     "acorn": "^8.14.0",
