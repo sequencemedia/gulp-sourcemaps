@@ -33,7 +33,7 @@
     "@adobe/css-tools": "^4.4.2",
     "@gulp-sourcemaps/identity-map": "^2.0.1",
     "@gulp-sourcemaps/map-sources": "^1.0.0",
-    "acorn": "^8.14.0",
+    "acorn": "^8.14.1",
     "convert-source-map": "^2.0.0",
     "debug-fabulous": "^2.0.8",
     "detect-newline": "^4.0.1",
@@ -46,7 +46,7 @@
     "@babel/core": "^7.26.9",
     "@babel/eslint-parser": "^7.26.8",
     "@babel/preset-env": "^7.26.9",
-    "@sequencemedia/eslint-config-standard": "^0.2.39",
+    "@sequencemedia/eslint-config-standard": "^0.2.40",
     "eslint": "^9.21.0",
     "globals": "^16.0.0",
     "husky": "^9.1.7"
