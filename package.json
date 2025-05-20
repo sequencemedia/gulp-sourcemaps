@@ -30,7 +30,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@adobe/css-tools": "^4.4.2",
+    "@adobe/css-tools": "^4.4.3",
     "@gulp-sourcemaps/identity-map": "^2.0.1",
     "@gulp-sourcemaps/map-sources": "^1.0.0",
     "acorn": "^8.14.1",
@@ -46,7 +46,7 @@
     "@babel/core": "^7.27.1",
     "@babel/eslint-parser": "^7.27.1",
     "@babel/preset-env": "^7.27.2",
-    "@sequencemedia/eslint-config-standard": "^0.2.60",
+    "@sequencemedia/eslint-config-standard": "^0.2.61",
     "eslint": "^9.27.0",
     "globals": "^16.1.0",
     "husky": "^9.1.7"
