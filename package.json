@@ -39,7 +39,7 @@
     "detect-newline": "^4.0.1",
     "graceful-fs": "^4.2.11",
     "plugin-error": "^2.0.1",
-    "source-map": "^0.7.4",
+    "source-map": "^0.7.6",
     "strip-bom-string": "^1.0.0"
   },
   "devDependencies": {
