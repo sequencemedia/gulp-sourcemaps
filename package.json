@@ -35,7 +35,7 @@
     "@gulp-sourcemaps/map-sources": "^1.0.0",
     "acorn": "^8.15.0",
     "convert-source-map": "^2.0.0",
-    "debug-fabulous": "^2.0.30",
+    "debug-fabulous": "^2.0.31",
     "detect-newline": "^4.0.1",
     "graceful-fs": "^4.2.11",
     "plugin-error": "^2.0.1",
