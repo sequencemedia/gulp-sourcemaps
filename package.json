@@ -30,14 +30,14 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@adobe/css-tools": "^4.5.0",
+    "@adobe/css-tools": "^5.0.0",
     "@gulp-sourcemaps/identity-map": "^2.0.1",
     "@gulp-sourcemaps/map-sources": "^1.0.0",
     "acorn": "^8.19.0",
     "convert-source-map": "^2.0.0",
-    "debug-fabulous": "^2.0.121",
+    "debug-fabulous": "^2.0.132",
     "detect-newline": "^4.0.1",
-    "graceful-fs": "^4.2.11",
+    "graceful-fs": "^4.2.12",
     "plugin-error": "^2.0.1",
     "source-map": "^0.8.0",
     "strip-bom-string": "^1.0.0"
@@ -46,9 +46,9 @@
     "@babel/core": "7.29.7",
     "@babel/eslint-parser": "7.29.7",
     "@babel/preset-env": "7.29.7",
-    "@sequencemedia/eslint-config-standard": "^0.2.132",
+    "@sequencemedia/eslint-config-standard": "^0.3.3",
     "eslint": "9.38.0",
-    "globals": "^17.13.0",
+    "globals": "^17.14.0",
     "husky": "^9.1.7"
   },
   "files": [
