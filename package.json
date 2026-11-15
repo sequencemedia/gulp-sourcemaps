@@ -27,7 +27,7 @@
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
-    "prepare": "husky"
+    "prepare": "node husky.mjs"
   },
   "dependencies": {
     "@adobe/css-tools": "^5.0.0",
